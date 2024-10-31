@@ -1,5 +1,5 @@
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, storage } from "./firebaseConfig";
 
 export const uploadProfilePicture = async (profilePicture) => {
@@ -30,6 +30,24 @@ export const registerEmployee = async (employeeData) => {
   }
 };
 
+// Função para buscar um funcionário pelo ID
+export const fetchEmployeeById = async (employeeId) => {
+    try {
+      const employeeRef = doc(db, "employees", employeeId); // Obtém a referência do documento
+      const employeeSnapshot = await getDoc(employeeRef);
+  
+      if (employeeSnapshot.exists()) {
+        return { id: employeeId, ...employeeSnapshot.data() }; // Retorna os dados do funcionário
+      } else {
+        throw new Error("Funcionário não encontrado");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar funcionário:", error);
+      throw error; // Propaga o erro para ser tratado no componente
+    }
+  };
+  
+
 export const handlePreviewCV = (employee) => {
     return {
       name: `${employee.firstName} ${employee.lastName}`,
@@ -39,3 +57,17 @@ export const handlePreviewCV = (employee) => {
     };
   };
   
+
+// Função para atualizar um funcionário
+export const updateEmployee = async (employeeId, updatedData) => {
+    try {
+      const employeeRef = doc(db, "employees", employeeId); // Obtém a referência do documento
+  
+      await updateDoc(employeeRef, updatedData); // Atualiza os dados no Firestore
+  
+      return { id: employeeId, ...updatedData }; // Retorna os dados atualizados
+    } catch (error) {
+      console.error("Erro ao atualizar funcionário:", error);
+      throw error; // Propaga o erro para ser tratado no componente
+    }
+  };

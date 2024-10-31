@@ -7,7 +7,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../services/firebaseConfig";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   IconButton,
@@ -24,6 +24,7 @@ const DashboardPage = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const fetchEmployees = async () => {
     const employeesCollection = collection(db, "employees");
@@ -33,7 +34,9 @@ const DashboardPage = () => {
         id: doc.id,
         ...doc.data(),
       }))
-      .sort((a, b) => a.isTerminated - b.isTerminated);
+      .sort((a, b) => {
+        return a.isTerminated === b.isTerminated ? 0 : a.isTerminated ? 1 : -1;
+      });
     setEmployees(employeeList);
   };
 
@@ -71,7 +74,6 @@ const DashboardPage = () => {
       alert("Não foi possível demitir o funcionário.");
     }
   };
-  
 
   const handleDeleteEmployee = async (id) => {
     await deleteDoc(doc(db, "employees", id));
@@ -79,15 +81,9 @@ const DashboardPage = () => {
     alert("Funcionário excluído com sucesso!");
   };
 
-  const handleUpdateEmployee = async () => {
-    await updateDoc(doc(db, "employees", selectedEmployee.id), {
-      ...selectedEmployee,
-    });
-    alert("Dados do funcionário atualizados com sucesso!");
-    fetchEmployees();
-    handleCloseModal();
+  const handleEditEmployee = (id) => {
+    navigate(`/edit-employee/${id}`);
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-8">
@@ -141,7 +137,7 @@ const DashboardPage = () => {
                 Promote
               </Button>
               <IconButton
-              onClick={handleUpdateEmployee}
+                onClick={() => handleEditEmployee(employee.id)}
                 color="success"
               >
                 <EditIcon />
@@ -153,7 +149,7 @@ const DashboardPage = () => {
               >
                 <DeleteIcon />
               </IconButton>
-              <Link to={`/employee-cv-preview/${employee.id}`} state={{employee}}>
+              <Link to={`/employee-cv-preview/${employee.id}`} state={{ employee }}>
                 <IconButton color="primary">
                   <SaveAltIcon />
                 </IconButton>
@@ -221,7 +217,6 @@ const DashboardPage = () => {
           </Button>
         </Box>
       </Modal>
-
     </div>
   );
 };

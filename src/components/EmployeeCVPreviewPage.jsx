@@ -12,6 +12,7 @@ const EmployeeCVPreviewPage = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
+    console.log(employee);
     const fetchPdfUrl = async () => {
       const storage = getStorage();
       const cvRef = ref(storage, `cv-files/${id}.pdf`);
@@ -20,7 +21,7 @@ const EmployeeCVPreviewPage = () => {
         const url = await getDownloadURL(cvRef);
         setPdfUrl(url);
       } catch (error) {
-        console.error("Erro ao obter a URL do CV:", error);
+        console.error("Error fetching CV URL:", error);
       }
     };
 
@@ -35,36 +36,34 @@ const EmployeeCVPreviewPage = () => {
       compress: true,
     });
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
     const margin = 15;
 
-    // Adicionando título
     pdf.setFontSize(24);
     pdf.setFont("helvetica", "bold");
-    pdf.text("Currículo", margin, margin + 10);
+    pdf.text("Curriculum Vitae", margin, margin + 10);
     
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "normal");
-    pdf.text(`Nome: ${employee.firstName || 'N/A'} ${employee.lastName || 'N/A'}`, margin, margin + 20);
-    pdf.text(`Telefone: ${employee.phone || 'N/A'}`, margin, margin + 30);
-    pdf.text(`Email: ${employee.email || 'N/A'}`, margin, margin + 40);
-    pdf.text(`Endereço: ${employee.address || 'N/A'}`, margin, margin + 50);
+    pdf.text(`Name: ${employee.firstName} ${employee.lastName}`, margin, margin + 20);
+    pdf.text(`Phone: ${employee.phone}`, margin, margin + 30);
+    pdf.text(`Email: ${employee.email}`, margin, margin + 40);
+    pdf.text(`Address: ${employee.address}`, margin, margin + 50);
 
     pdf.setFontSize(16);
     pdf.setFont("helvetica", "bold");
-    pdf.text("Informações do Funcionário", margin, margin + 70);
+    pdf.text("Employee Information", margin, margin + 70);
     
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "normal");
-    pdf.text(`Cargo: ${employee.position || 'N/A'}`, margin, margin + 80);
-    pdf.text(`Departamento: ${employee.department || 'N/A'}`, margin, margin + 90);
-    pdf.text(`Data de Admissão: ${employee.startDate || 'N/A'}`, margin, margin + 100);
-    pdf.text(`Status: ${employee.isTerminated ? 'Terminado' : 'Ativo'}`, margin, margin + 110);
+    pdf.text(`Job Title: ${employee.jobTitle}`, margin, margin + 80);
+    pdf.text(`Department: ${employee.department}`, margin, margin + 90);
+    pdf.text(`Start Date: ${employee.startDate}`, margin, margin + 100);
+    pdf.text(`Status: ${employee.isTerminated ? 'Terminated' : 'Active'}`, margin, margin + 110);
     pdf.text(`ID: ${id}`, margin, margin + 120);
 
     pdf.setFontSize(16);
     pdf.setFont("helvetica", "bold");
-    pdf.text("Histórico", margin, margin + 140);
+    pdf.text("History", margin, margin + 140);
     
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "normal");
@@ -74,17 +73,16 @@ const EmployeeCVPreviewPage = () => {
         pdf.text(`${event.date}: ${event.event}`, margin, margin + 150 + index * 10);
       });
     } else {
-      pdf.text("Nenhum histórico disponível.", margin, margin + 150);
+      pdf.text("No history available.", margin, margin + 150);
     }
 
-    // Salvar o PDF
-    pdf.save(`${employee.firstName}_${employee.lastName}_CV_Gerado.pdf`);
+    pdf.save(`${employee.firstName}_${employee.lastName}_CV_Generated.pdf`);
   };
 
   return (
     <Box className="min-h-screen flex flex-col items-center p-8 bg-gray-50">
       <Typography variant="h4" fontWeight="bold" color="#0782F9" gutterBottom>
-        Pré-visualização do CV
+        CV Preview
       </Typography>
       {employee && (
         <Paper 
@@ -101,26 +99,26 @@ const EmployeeCVPreviewPage = () => {
           }}
         >
           <Typography variant="h5" fontWeight="bold" sx={{ borderBottom: '2px solid #0782F9', pb: 1 }}>
-            Informações de Contato
+            Contact Information
           </Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Nome: {employee.firstName || 'N/A'} {employee.lastName || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Telefone: {employee.phone || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Email: {employee.email || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Endereço: {employee.address || 'N/A'}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Name: {employee.firstName} {employee.lastName}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Phone: {employee.phone}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Email: {employee.email}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Address: {employee.address}</Typography>
 
           <Divider sx={{ my: 2 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ borderBottom: '2px solid #0782F9', pb: 1 }}>
-            Informações do Funcionário
+            Employee Information
           </Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Cargo: {employee.position || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Departamento: {employee.department || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Data de Admissão: {employee.startDate || 'N/A'}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Status: {employee.isTerminated ? 'Terminado' : 'Ativo'}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Job Title: {employee.jobTitle}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Department: {employee.department}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Start Date: {employee.startDate}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Status: {employee.isTerminated ? 'Terminated' : 'Active'}</Typography>
           <Typography variant="subtitle1" sx={{ my: 1 }}>ID: {id}</Typography>
 
           <Divider sx={{ my: 2 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ borderBottom: '2px solid #0782F9', pb: 1 }}>
-            Histórico
+            History
           </Typography>
           {Array.isArray(employee.history) && employee.history.length > 0 ? (
             employee.history.map((event, index) => (
@@ -129,7 +127,7 @@ const EmployeeCVPreviewPage = () => {
               </Typography>
             ))
           ) : (
-            <Typography variant="subtitle1" sx={{ my: 1 }}>Nenhum histórico disponível.</Typography>
+            <Typography variant="subtitle1" sx={{ my: 1 }}>No history available.</Typography>
           )}
         </Paper>
       )}
@@ -139,7 +137,7 @@ const EmployeeCVPreviewPage = () => {
         sx={{ mt: 2 }}
         onClick={handleGeneratePDF}
       >
-        Baixar CV
+        Download CV
       </Button>
     </Box>
   );

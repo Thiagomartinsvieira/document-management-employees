@@ -33,8 +33,8 @@ const EmployeeEditPage = () => {
                 setFormData({ ...employeeData });
                 setProfilePreview(employeeData.profilePictureUrl || null);
             } catch (error) {
-                console.error("Erro ao carregar os dados do funcionário: ", error);
-                alert("Erro ao carregar os dados do funcionário.");
+                console.error("Error loading employee data: ", error);
+                alert("Error loading employee data.");
             }
         };
   
@@ -71,41 +71,41 @@ const EmployeeEditPage = () => {
 
         try {
             await updateEmployee(employeeId, dataToUpdate);
-            alert("Dados do funcionário atualizados com sucesso!");
+            alert("Employee data updated successfully!");
             navigate('/dashboard');
         } catch (error) {
-            console.error("Erro ao atualizar os dados do funcionário: ", error);
-            alert("Erro ao atualizar os dados do funcionário. Tente novamente.");
+            console.error("Error updating employee data: ", error);
+            alert("Error updating employee data. Please try again.");
         }
     };
 
     return (
         <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8">
             <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-8">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Editar Funcionário</h2>
-                <p className="text-gray-500 mb-6">Atualize as informações do funcionário.</p>
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Edit Employee</h2>
+                <p className="text-gray-500 mb-6">Update employee information.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-600">Informação de contato</h3>
+                        <h3 className="text-lg font-semibold text-gray-600">Contact Information</h3>
                         <div className="flex items-center mb-4">
                             <div className="flex-1 grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-gray-600">Nome</label>
+                                    <label className="text-gray-600">First Name</label>
                                     <input
                                         type="text"
                                         name="firstName"
-                                        placeholder="ex. Tiago"
+                                        placeholder="e.g. Tiago"
                                         className="input-field"
                                         onChange={handleInputChange}
                                         value={formData.firstName}
                                         required
                                     />
-                                    <label className="text-gray-600">Sobrenome</label>
+                                    <label className="text-gray-600">Last Name</label>
                                     <input
                                         type="text"
                                         name="lastName"
-                                        placeholder="ex. Souza"
+                                        placeholder="e.g. Souza"
                                         className="input-field"
                                         onChange={handleInputChange}
                                         value={formData.lastName}
@@ -117,14 +117,14 @@ const EmployeeEditPage = () => {
                                         {profilePreview ? (
                                             <img src={profilePreview} alt="Profile Preview" className="w-full h-full object-cover" />
                                         ) : (
-                                            <span className="text-gray-400">Foto</span>
+                                            <span className="text-gray-400">Photo</span>
                                         )}
                                     </div>
                                     <div className="flex flex-col items-center">
-                                        <label className="block text-gray-600 font-semibold mt-4">Foto de perfil</label>
+                                        <label className="block text-gray-600 font-semibold mt-4">Profile Picture</label>
                                         <label className="text-cyan-600 cursor-pointer mt-2 hover:underline">
                                             <input type="file" className="hidden" onChange={handleProfilePictureChange} />
-                                            Alterar Foto
+                                            Change Photo
                                         </label>
                                         <div className="flex items-center space-x-2 mt-4">
                                             <input
@@ -133,7 +133,7 @@ const EmployeeEditPage = () => {
                                                 onChange={toggleRounded}
                                                 className="cursor-pointer"
                                             />
-                                            <label className="text-gray-600 cursor-pointer">Foto Arredondada</label>
+                                            <label className="text-gray-600 cursor-pointer">Rounded Photo</label>
                                         </div>
                                     </div>
                                 </div>
@@ -142,11 +142,11 @@ const EmployeeEditPage = () => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-gray-600">Emprego</label>
+                                <label className="text-gray-600">Job Title</label>
                                 <input
                                     type="text"
                                     name="jobTitle"
-                                    placeholder="ex. Vendedor"
+                                    placeholder="e.g. Salesperson"
                                     className="input-field"
                                     onChange={handleInputChange}
                                     value={formData.jobTitle}
@@ -154,11 +154,11 @@ const EmployeeEditPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-gray-600">Endereço</label>
+                                <label className="text-gray-600">Address</label>
                                 <input
                                     type="text"
                                     name="address"
-                                    placeholder="ex. Avenida Paulista, 1234"
+                                    placeholder="e.g. Avenida Paulista, 1234"
                                     className="input-field"
                                     onChange={handleInputChange}
                                     value={formData.address}
@@ -166,11 +166,11 @@ const EmployeeEditPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-gray-600">Telefone</label>
+                                <label className="text-gray-600">Phone</label>
                                 <input
                                     type="text"
                                     name="phone"
-                                    placeholder="ex. (11) 91234-5678"
+                                    placeholder="e.g. (11) 91234-5678"
                                     className="input-field"
                                     onChange={handleInputChange}
                                     value={formData.phone}
@@ -178,11 +178,11 @@ const EmployeeEditPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-gray-600">E-mail</label>
+                                <label className="text-gray-600">Email</label>
                                 <input
                                     type="email"
                                     name="email"
-                                    placeholder="ex. tiago.souza@email.com"
+                                    placeholder="e.g. tiago.souza@email.com"
                                     className="input-field"
                                     onChange={handleInputChange}
                                     value={formData.email}
@@ -190,11 +190,11 @@ const EmployeeEditPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-gray-600">Nacionalidade</label>
+                                <label className="text-gray-600">Nationality</label>
                                 <input
                                     type="text"
                                     name="nationality"
-                                    placeholder="ex. Brasileira"
+                                    placeholder="e.g. Brazilian"
                                     className="input-field"
                                     onChange={handleInputChange}
                                     value={formData.nationality}
@@ -202,7 +202,7 @@ const EmployeeEditPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-gray-600">Data de nascimento</label>
+                                <label className="text-gray-600">Date of Birth</label>
                                 <input
                                     type="date"
                                     name="birthDate"
@@ -216,16 +216,16 @@ const EmployeeEditPage = () => {
                     </div>
 
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-600">Status do Funcionário</h3>
+                        <h3 className="text-lg font-semibold text-gray-600">Employee Status</h3>
                         <div className="text-gray-700 font-medium">
-                            {formData.isTerminated ? "Funcionário Desligado" : "Funcionário Ativo"}
+                            {formData.isTerminated ? "Employee Terminated" : "Employee Active"}
                         </div>
                         <button
                             type="button"
                             onClick={toggleEmployeeStatus}
                             className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300"
                         >
-                            {formData.isTerminated ? "Reativar Funcionário" : "Desligar Funcionário"}
+                            {formData.isTerminated ? "Reactivate Employee" : "Terminate Employee"}
                         </button>
                     </div>
 
@@ -233,7 +233,7 @@ const EmployeeEditPage = () => {
                         type="submit"
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition duration-300"
                     >
-                        Atualizar Funcionário
+                        Update Employee
                     </button>
                 </form>
             </div>

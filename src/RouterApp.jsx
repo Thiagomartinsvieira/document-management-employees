@@ -6,6 +6,7 @@ import PrivateRoute from './components/PrivateRoute';
 import EmployeeRegistrationPage from './pages/EmployeeRegistrationPage';
 import DashboardPage from './pages/Dashoard';
 import EmployeeCVPreviewPage from './components/EmployeeCVPreviewPage';
+import EmployeeEditPage from './pages/EditEmployeePage';
 
 const RouterApp = () => {
   return (
@@ -16,7 +17,8 @@ const RouterApp = () => {
       <Route path="/register-employee" element={<EmployeeRegistrationPage />} />
       <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
       <Route path="/employee-cv-preview/:id" element={<EmployeeCVPreviewPage />} />
-    </Routes>
+      <Route path="/edit-employee/:employeeId" element={<EmployeeEditPage />} />
+      </Routes>
   );
 };
 

@@ -30,22 +30,25 @@ export const registerEmployee = async (employeeData) => {
   }
 };
 
-// Função para buscar um funcionário pelo ID
 export const fetchEmployeeById = async (employeeId) => {
-    try {
-      const employeeRef = doc(db, "employees", employeeId); // Obtém a referência do documento
+  if (!employeeId) {
+      throw new Error("Invalid employee ID");
+  }
+  try {
+      const employeeRef = doc(db, "employees", employeeId);
       const employeeSnapshot = await getDoc(employeeRef);
-  
+
       if (employeeSnapshot.exists()) {
-        return { id: employeeId, ...employeeSnapshot.data() }; // Retorna os dados do funcionário
+          return { id: employeeId, ...employeeSnapshot.data() };
       } else {
-        throw new Error("Funcionário não encontrado");
+          throw new Error("Funcionário não encontrado");
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Erro ao buscar funcionário:", error);
-      throw error; // Propaga o erro para ser tratado no componente
-    }
-  };
+      throw error;
+  }
+};
+
   
 
 export const handlePreviewCV = (employee) => {
@@ -58,16 +61,15 @@ export const handlePreviewCV = (employee) => {
   };
   
 
-// Função para atualizar um funcionário
 export const updateEmployee = async (employeeId, updatedData) => {
     try {
-      const employeeRef = doc(db, "employees", employeeId); // Obtém a referência do documento
+      const employeeRef = doc(db, "employees", employeeId); 
   
-      await updateDoc(employeeRef, updatedData); // Atualiza os dados no Firestore
+      await updateDoc(employeeRef, updatedData);
   
-      return { id: employeeId, ...updatedData }; // Retorna os dados atualizados
+      return { id: employeeId, ...updatedData }; 
     } catch (error) {
       console.error("Erro ao atualizar funcionário:", error);
-      throw error; // Propaga o erro para ser tratado no componente
+      throw error; 
     }
   };

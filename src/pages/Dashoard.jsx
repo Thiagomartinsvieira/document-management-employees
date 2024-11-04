@@ -110,7 +110,7 @@ const DashboardPage = () => {
             }`}
           >
             <img
-              src={employee.profilePictureUrl || "/default-avatar.png"}
+              src={employee.profilePictureUrl || "/images/default-avatar.png"}
               alt="Employee Avatar"
               className="w-24 h-24 rounded-full mb-4 border-4 border-cyan-800"
             />
@@ -118,7 +118,7 @@ const DashboardPage = () => {
               {employee.firstName} {employee.lastName}
             </h2>
             <p className="text-sm font-medium text-gray-500 mb-2">
-              Cargo: {employee.position}
+              Cargo: {employee.jobTitle}
             </p>
             <p className="text-xs text-gray-400 mb-4">
               Setor: {employee.department}
@@ -185,7 +185,7 @@ const DashboardPage = () => {
           </Typography>
           <TextField
             label="Cargo"
-            value={selectedEmployee?.position || ""}
+            value={selectedEmployee?.jobTitle || ""}
             onChange={(e) =>
               setSelectedEmployee({
                 ...selectedEmployee,

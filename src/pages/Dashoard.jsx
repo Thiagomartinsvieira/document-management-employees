@@ -45,28 +45,51 @@ const DashboardPage = () => {
   }, []);
 
   const handleOpenModal = (employee) => {
-    setSelectedEmployee(employee);
+    setSelectedEmployee({
+      ...employee,
+      position: employee.jobTitle || "",  
+      department: employee.department || "",
+      salary: employee.salary || "", 
+    });
     setIsModalOpen(true);
   };
-
+  
   const handleCloseModal = () => {
     setSelectedEmployee(null);
     setIsModalOpen(false);
   };
 
   const handlePromoteEmployee = async () => {
-    await updateDoc(doc(db, "employees", selectedEmployee.id), {
-      position: selectedEmployee.position,
-      department: selectedEmployee.department,
-    });
-    alert("Funcionário atualizado com sucesso!");
-    fetchEmployees();
-    handleCloseModal();
+    if (!selectedEmployee) return;
+    
+    const { position, department, salary } = selectedEmployee;
+  
+    if (position === undefined || department === undefined || salary === undefined) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+  
+    try {
+      await updateDoc(doc(db, "employees", selectedEmployee.id), {
+        position,
+        department,
+        salary,
+      });
+      alert("Funcionário atualizado com sucesso!");
+      fetchEmployees();
+      handleCloseModal();
+    } catch (error) {
+      console.error("Erro ao atualizar funcionário:", error);
+      alert("Não foi possível atualizar o funcionário.");
+    }
   };
+  
 
   const handleTerminateEmployee = async (employee) => {
     try {
-      await updateDoc(doc(db, "employees", employee.id), { isTerminated: true });
+      await updateDoc(doc(db, "employees", employee.id), {
+        isTerminated: true,
+      });
       fetchEmployees();
       alert("Funcionário demitido com sucesso!");
     } catch (error) {
@@ -149,7 +172,10 @@ const DashboardPage = () => {
               >
                 <DeleteIcon />
               </IconButton>
-              <Link to={`/employee-cv-preview/${employee.id}`} state={{ employee }}>
+              <Link
+                to={`/employee-cv-preview/${employee.id}`}
+                state={{ employee }}
+              >
                 <IconButton color="primary">
                   <SaveAltIcon />
                 </IconButton>
@@ -185,28 +211,42 @@ const DashboardPage = () => {
           </Typography>
           <TextField
             label="Cargo"
-            value={selectedEmployee?.jobTitle || ""}
+            value={selectedEmployee?.position || ""}
             onChange={(e) =>
               setSelectedEmployee({
                 ...selectedEmployee,
-                position: e.target.value,
+                position: e.target.value || "", // Garante que position não seja undefined
               })
             }
             fullWidth
             margin="normal"
           />
+
           <TextField
             label="Setor"
             value={selectedEmployee?.department || ""}
             onChange={(e) =>
               setSelectedEmployee({
                 ...selectedEmployee,
-                department: e.target.value,
+                department: e.target.value || "",
               })
             }
             fullWidth
             margin="normal"
           />
+          <TextField
+            label="Salary"
+            value={selectedEmployee?.salary || ""}
+            onChange={(e) =>
+              setSelectedEmployee({
+                ...selectedEmployee,
+                salary: e.target.value || "",
+              })
+            }
+            fullWidth
+            margin="normal"
+          />
+
           <Button
             onClick={handlePromoteEmployee}
             variant="contained"

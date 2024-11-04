@@ -1,29 +1,35 @@
-import { auth } from "../firebaseConfig"
+import { auth } from "./firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const registerUser = async (email, password) => {
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-      return userCredential.user;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const token = await userCredential.user.getIdToken();
+        localStorage.setItem("userToken", token);
+        return userCredential.user;
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
-  };
-  
-  const loginUser = async (email, password) => {
+};
+
+const loginUser = async (email, password) => {
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, password);
-      return userCredential.user;
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const token = await userCredential.user.getIdToken();
+        localStorage.setItem("userToken", token);
+        return userCredential.user;
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
-  };
-  
-  const logoutUser = async () => {
+};
+
+const logoutUser = async () => {
     try {
-      await auth.signOut();
+        await signOut(auth);
+        localStorage.removeItem("userToken")
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
-  };
-  
-  export { registerUser, loginUser, logoutUser };
+};
+
+export { registerUser, loginUser, logoutUser };

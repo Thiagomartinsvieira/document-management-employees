@@ -112,7 +112,7 @@ const EmployeeCVPreviewPage = () => {
           </Typography>
           <Typography variant="subtitle1" sx={{ my: 1 }}>Job Title: {employee.jobTitle}</Typography>
           <Typography variant="subtitle1" sx={{ my: 1 }}>Department: {employee.department}</Typography>
-          <Typography variant="subtitle1" sx={{ my: 1 }}>Start Date: {employee.startDate}</Typography>
+          <Typography variant="subtitle1" sx={{ my: 1 }}>Start Date: {employee.admissionDate}</Typography>
           <Typography variant="subtitle1" sx={{ my: 1 }}>Status: {employee.isTerminated ? 'Terminated' : 'Active'}</Typography>
           <Typography variant="subtitle1" sx={{ my: 1 }}>ID: {id}</Typography>
 
